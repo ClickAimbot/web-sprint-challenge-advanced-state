@@ -40,7 +40,14 @@ export function fetchQuiz() {
 }
 export function postAnswer() {
   return function (dispatch) {
-    dispatch(setMessage('Submitting answer...'))
+    dispatch(postAnswer());
+    axios.post('http://localhost:9000/api/quiz/answer')
+      .then(res => {
+        console.log(res.data.data);
+        dispatch(resetForm());
+        dispatch(setMessage(res.data.data));
+        dispatch(fetchQuiz());
+    });
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
@@ -49,7 +56,13 @@ export function postAnswer() {
 }
 export function postQuiz() {
   return function (dispatch) {
-    dispatch(setMessage('Submitting new quiz...'))
+    dispatch(postQuiz());
+    axios.post('http://localhost:9000/api/quiz')
+      .then(res => {
+        console.log(res.data.data);
+        dispatch(setMessage(res.data.data));
+        dispatch(resetForm());
+    });
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form

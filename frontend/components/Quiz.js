@@ -3,7 +3,7 @@ import { connect, useSelector } from 'react-redux';
 import { fetchQuiz, postAnswer } from '../state/action-creators';
 
 export function Quiz(props) {
-  const { quiz, selectedAnswer, infoMessage } = props;
+  const { selectedAnswer } = props;
   return (
     <div id="wrapper">
       {
@@ -14,7 +14,7 @@ export function Quiz(props) {
 
             <div id="quizAnswers">
               <div className="answer selected">
-                
+                {selectedAnswer}
                 <button>
                   SELECTED
                 </button>
@@ -44,4 +44,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Quiz)
+export default connect(mapStateToProps, {selectedAnswer, })(Quiz)
