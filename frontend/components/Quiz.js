@@ -14,7 +14,7 @@ export function Quiz(props) {
 
             <div id="quizAnswers">
               <div className="answer selected">
-                {selectedAnswer}
+                
                 <button>
                   SELECTED
                 </button>

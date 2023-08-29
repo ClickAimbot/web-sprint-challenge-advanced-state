@@ -32,6 +32,10 @@ export function fetchQuiz() {
       .then(res => {
         console.log(res.data.data);
         dispatch(setQuiz(res.data.data));
+    })
+      .catch(err => {
+        console.log(err);
+        dispatch(setMessage(err));
     });
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
@@ -47,6 +51,10 @@ export function postAnswer() {
         dispatch(resetForm());
         dispatch(setMessage(res.data.data));
         dispatch(fetchQuiz());
+    })
+      .catch(err => {
+        console.log(err);
+        dispatch(setMessage(err));
     });
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
@@ -62,6 +70,10 @@ export function postQuiz() {
         console.log(res.data.data);
         dispatch(setMessage(res.data.data));
         dispatch(resetForm());
+    })
+      .catch(err => {
+        console.log(err);
+        dispatch(setMessage(err));
     });
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
