@@ -1,15 +1,14 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import * as actionCreators from '../state/action-creators';
-import { useSelector } from 'react-redux';
 
 export function Wheel(props) {
-  const dispatch = useDispatch()
+  const { moveClockwise, moveCounterClockwise } = props
   const handleUpClick = () => {
-    dispatch({ type: 'MOVE_CLOCKWISE' })
+    moveClockwise()
   }
   const handleDownClick = () => {
-    dispatch({ type: 'MOVE_COUNTERCLOCKWISE' })
+    moveCounterClockwise()
   }
 
   return (
@@ -30,4 +29,4 @@ export function Wheel(props) {
   )
 }
 
-export default connect(st => st, actionCreators)(Wheel);
+export default connect(state => state, actionCreators)(Wheel);

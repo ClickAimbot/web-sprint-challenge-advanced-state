@@ -27,7 +27,6 @@ export function resetForm() {
 // ❗ Async action creators
 export function fetchQuiz() {
   return function (dispatch) {
-    dispatch(fetchQuiz());
     axios.get('http://localhost:9000/api/quiz/next')
       .then(res => {
         console.log(res.data.data);
@@ -44,7 +43,6 @@ export function fetchQuiz() {
 }
 export function postAnswer() {
   return function (dispatch) {
-    dispatch(postAnswer());
     axios.post('http://localhost:9000/api/quiz/answer')
       .then(res => {
         console.log(res.data.data);

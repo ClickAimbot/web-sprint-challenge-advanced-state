@@ -1,39 +1,46 @@
-import React from 'react'
-import { connect, useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux';
 import { fetchQuiz, postAnswer } from '../state/action-creators';
 
 export function Quiz(props) {
-  const { selectedAnswer } = props;
+  const { quiz, selectedAnswer, infoMessage, fetchQuiz, postAnswer } = props;
+
+  useEffect(() => {
+    fetchQuiz();
+  }, [fetchQuiz]);
+
+  const handleAnswerClick = (answerId) => {
+    postAnswer(answerId);
+  };
+  const handleSubmitAnswer = () => {
+    postAnswer(selectedAnswer);
+  };
   return (
     <div id="wrapper">
-      {
-        // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        true ? (
+      {quiz ? (
           <>
-            <h2></h2>
+            <h2>{quiz.question_text}</h2>
 
             <div id="quizAnswers">
-              <div className="answer selected">
-                
-                <button>
-                  SELECTED
-                </button>
-              </div>
-
-              <div className="answer">
-                
-                <button>
-                  Select
-                </button>
-              </div>
+              {quiz.answers.map((answer, idx) => (
+                <div key={answer.id} className={`answer ${selectedAnswer === idx ? 'selected' : ''}`}>
+                  <button onClick={() => handleAnswerClick(idx)}>
+                    {answer.answer}
+                  </button>
+                </div>
+              ))}
             </div>
-
-            <button id="submitAnswerBtn">Submit answer</button>
+              
+            <button id="submitAnswerBtn" onClick={handleSubmitAnswer} disabled={selectedAnswer === null}>
+              Submit answer
+            </button>
           </>
-        ) : 'Loading next quiz...'
-      }
+        ) : (
+          'Loading next quiz...'
+        )}
+      <div id="infoMessage">{infoMessage}</div>
     </div>
-  )
+  );
 }
 
 const mapStateToProps = (state) => {
@@ -44,4 +51,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {selectedAnswer, })(Quiz)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchQuiz: () => dispatch(fetchQuiz()),
+    postAnswer: (answerId) => dispatch(postAnswer(answerId))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz)

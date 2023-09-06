@@ -10,11 +10,13 @@ function wheel(state = initialWheelState, action) {
       return state + 1
     case MOVE_COUNTERCLOCKWISE:
       return state - 1
+    case RESET_FORM:
+      return initialWheelState
     default:
       return state
   }
 }
-const initialQuizState = null
+const initialQuizState = ''
 function quiz(state = initialQuizState, action) {
   switch (action.type) {
     case SET_QUIZ_INTO_STATE:
@@ -24,7 +26,7 @@ function quiz(state = initialQuizState, action) {
   }
 }
 
-const initialSelectedAnswerState = null
+const initialSelectedAnswerState = ''
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch (action.type) {
     case SET_SELECTED_ANSWER:
