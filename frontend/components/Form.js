@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import * as actionCreators from '../state/action-creators'
-
+import * as actionCreators from '../state/action-creators';
 export function Form(props) {
-
-  const onChange = evt => {
-
-  }
+  const [newQuestion, setNewQuestion] = useState('')
+  const [newTrueAnswer, setNewTrueAnswer] = useState('')
+  const [newFalseAnswer, setNewFalseAnswer] = useState('')
 
   const onSubmit = evt => {
+    evt.preventDefault()
+    props.form(newQuestion, newTrueAnswer, newFalseAnswer)
+  }
 
+  const onChange = evt => {
+     setNewQuestion(evt.target.value)
+     setNewTrueAnswer(evt.target.value)
+     setNewFalseAnswer(evt.target.value)
   }
 
   return (
