@@ -1,24 +1,46 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionCreators from '../state/action-creators';
+import { moveClockwise, moveCounterClockwise } from '../state/action-creators'; // Import your action creators
 
-export function Wheel(props) {
+function Wheel(props) {
+  const { moveClockwise, moveCounterClockwise, wheelState } = props;
+
+  const handleUpClick = () => {
+    moveClockwise(); // Dispatch the MOVE_CLOCKWISE action
+  };
+
+  const handleDownClick = () => {
+    moveCounterClockwise(); // Dispatch the MOVE_COUNTERCLOCKWISE action
+  };
+
   return (
     <div id="wrapper">
       <div id="wheel">
-        <div className="cog active" style={{ "--i": 0 }}>B</div>
-        <div className="cog" style={{ "--i": 1 }}></div>
-        <div className="cog" style={{ "--i": 2 }}></div>
-        <div className="cog" style={{ "--i": 3 }}></div>
-        <div className="cog" style={{ "--i": 4 }}></div>
-        <div className="cog" style={{ "--i": 5 }}></div>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={index}
+            className={`cog ${index === wheelState ? 'active' : ''}`}
+            style={{ "--i": index }}
+          >
+            {index === wheelState ? 'B' : ''}
+          </div>
+        ))}
       </div>
       <div id="keypad">
-        <button id="counterClockwiseBtn" > Counter clockwise</button>
-        <button id="clockwiseBtn" >Clockwise</button>
+        <button id="counterClockwiseBtn" onClick={handleDownClick}>Counter clockwise</button>
+        <button id="clockwiseBtn" onClick={handleUpClick}>Clockwise</button>
       </div>
     </div>
   );
 }
 
-export default connect()(Wheel);
+const mapStateToProps = (state) => ({
+  wheelState: state.wheel, // Map the wheel state to props
+});
+
+const mapDispatchToProps = {
+  moveClockwise, // Map the moveClockwise action creator to props
+  moveCounterClockwise, // Map the moveCounterClockwise action creator to props
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wheel);
