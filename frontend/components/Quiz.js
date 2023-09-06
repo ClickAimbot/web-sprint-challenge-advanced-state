@@ -9,8 +9,21 @@ function Quiz(props) {
     fetchQuiz();
   }, [fetchQuiz]);
 
-  const handleAnswerClick = (answerId) => {
-    postAnswer(answerId);
+  const handleAnswerClick = (answerId, idx) => {
+    // Toggle the selected answer based on its current state
+    const newSelectedAnswer = selectedAnswer === idx ? null : idx;
+    postAnswer(answerId, newSelectedAnswer);
+    
+    // Update the label of the button for all answers
+    const answerElements = document.querySelectorAll('.answer');
+    answerElements.forEach((element, index) => {
+      const button = element.querySelector('button');
+      if (newSelectedAnswer === index) {
+        button.textContent = 'SELECTED';
+      } else {
+        button.textContent = 'Select';
+      }
+    });
   };
   
   const handleSubmitAnswer = () => {
