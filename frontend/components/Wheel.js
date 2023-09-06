@@ -3,30 +3,50 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../state/action-creators';
 
 export function Wheel(props) {
-  const { moveClockwise, moveCounterClockwise } = props
-  const handleUpClick = () => {
-    moveClockwise()
-  }
-  const handleDownClick = () => {
-    moveCounterClockwise()
-  }
+  const { activeCogIndex, handleDownClick, handleUpClick } = props; // Get the activeCogIndex from props
+
+  const renderCogs = () => {
+    const cogs = Array.from({ length: 6 });
+
+    // Rotate cogs based on activeCogIndex
+    const rotatedCogs = [
+      ...cogs.slice(activeCogIndex),
+      ...cogs.slice(0, activeCogIndex),
+    ];
+
+    return rotatedCogs.map((_, index) => (
+      <div
+        key={index}
+        className={`cog ${index === 0 ? 'active' : ''}`} // Make the first cog active
+        style={{ '--i': index }}
+      >
+        {index === 0 ? 'B' : ''}
+      </div>
+    ));
+  };
 
   return (
     <div id="wrapper">
-      <div id="wheel">
-        <div className="cog active" style={{ "--i": 0 }}>B</div>
-        <div className="cog" style={{ "--i": 1 }}></div>
-        <div className="cog" style={{ "--i": 2 }}></div>
-        <div className="cog" style={{ "--i": 3 }}></div>
-        <div className="cog" style={{ "--i": 4 }}></div>
-        <div className="cog" style={{ "--i": 5 }}></div>{/* --i is a custom CSS property, no need to touch that nor the style object */}
-      </div>
+      <div id="wheel">{renderCogs()}</div>
       <div id="keypad">
-        <button id="counterClockwiseBtn" onClick={handleDownClick}>Counter clockwise</button>
-        <button id="clockwiseBtn" onClick={handleUpClick}>Clockwise</button>
+        <button id="counterClockwiseBtn" onClick={handleDownClick}>
+          Counter clockwise
+        </button>
+        <button id="clockwiseBtn" onClick={handleUpClick}>
+          Clockwise
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default connect(state => state, actionCreators)(Wheel);
+const mapStateToProps = (state) => ({
+  activeCogIndex: state.wheel, // Get the activeCogIndex from the Redux state
+});
+
+const mapDispatchToProps = {
+  handleUpClick: actionCreators.moveClockwise,
+  handleDownClick: actionCreators.moveCounterClockwise,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wheel);
