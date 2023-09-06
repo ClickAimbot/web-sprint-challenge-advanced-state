@@ -13,18 +13,19 @@ function Quiz(props) {
     // Toggle the selected answer based on its current state
     const newSelectedAnswer = selectedAnswer === idx ? null : idx;
     postAnswer(answerId, newSelectedAnswer);
-    // Remove the "selected" class from all answers and add it only to the selected one
+    
+    // Update the label of the button for all answers
     const answerElements = document.querySelectorAll('.answer');
     answerElements.forEach((element, index) => {
+      const button = element.querySelector('button');
       if (newSelectedAnswer === index) {
-        element.classList.add('selected');
+        button.textContent = 'SELECTED';
       } else {
-        element.classList.remove('selected');
+        button.textContent = 'Select';
       }
     });
   };
   
-
   const handleSubmitAnswer = () => {
     postAnswer(selectedAnswer);
   };
