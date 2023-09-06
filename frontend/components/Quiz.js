@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchQuiz, postAnswer } from '../state/action-creators';
+import Message from './Message';
 
 function Quiz(props) {
   const { quiz, selectedAnswer, infoMessage, fetchQuiz, postAnswer } = props;
@@ -9,33 +10,11 @@ function Quiz(props) {
     fetchQuiz();
   }, [fetchQuiz]);
 
-  const handleAnswerClick = (answerId, idx) => {
+  const handleAnswerClick = (answerId) => {
     // Toggle the selected answer based on its current state
-    const newSelectedAnswer = selectedAnswer === idx ? null : idx;
-    postAnswer(answerId, newSelectedAnswer);
-  
-    // Remove the "selected" class from all answers
-    const answerElements = document.querySelectorAll('.answer');
-    answerElements.forEach((element) => {
-      element.classList.remove('selected');
-    });
-  
-    // Add the "selected" class to the clicked answer
-    const clickedAnswer = answerElements[idx];
-    clickedAnswer.classList.add('selected');
-    
-    // Update the label of the button for all answers
-    answerElements.forEach((element, index) => {
-      const button = element.querySelector('button');
-      if (newSelectedAnswer === index) {
-        button.textContent = 'SELECTED';
-      } else {
-        button.textContent = 'Select';
-      }
-    });
+    postAnswer(quiz.quiz_id, answerId.answer_id);
   };
-  
-  
+
   const handleSubmitAnswer = () => {
     postAnswer(selectedAnswer);
   };
@@ -47,15 +26,15 @@ function Quiz(props) {
           <h2>{quiz.question}</h2>
 
           <div id="quizAnswers">
-            {quiz.answers.map((answer, idx) => (
+            {quiz.answers.map((answerId, idx) => (
               <div
-                key={answer.id}
-                className={`answer ${selectedAnswer === idx ? 'selected' : ''}`}
-                onClick={() => handleAnswerClick(answer.id, idx)} 
+                key={answerId}
+                className={`answer ${selectedAnswer === answerId ? 'selected' : ''}`}
+                onClick={() => handleAnswerClick(answerId)} 
               >
-                {answer.text}
+                {answerId.text}
                 <button>
-                  {selectedAnswer === idx ? 'SELECTED' : 'Select'}
+                  {selectedAnswer === answerId ? 'SELECTED' : 'Select'}
                 </button>
               </div>
             ))}
@@ -69,6 +48,7 @@ function Quiz(props) {
         'Loading next quiz...'
       )}
       <div id="infoMessage">{infoMessage}</div>
+      <Message message={infoMessage} /> {/* Display the message */}
     </div>
   );
 }
@@ -81,8 +61,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuiz: () => dispatch(fetchQuiz()),
-  postAnswer: (answerId, selectedAnswer) => dispatch(postAnswer(answerId, selectedAnswer)), // Pass selectedAnswer
+  postAnswer: (answerId, quizId) => dispatch(postAnswer(answerId, quizId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
+
 

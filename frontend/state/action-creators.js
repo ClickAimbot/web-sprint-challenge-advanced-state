@@ -67,15 +67,17 @@ export function fetchQuiz() {
     // - Dispatch an action to send the obtained quiz to its state
   }
 }
-export function postAnswer(answerId) {
+export function postAnswer(quizId, answerId) {
+  // console.log(quizId, answerId)
   return function (dispatch) {
     dispatch(resetForm());
-    axios.post('http://localhost:9000/api/quiz/answer', { answerId })
+    axios.post('http://localhost:9000/api/quiz/answer', { quiz_id: quizId, answer_id: answerId })
       .then(res => {
         dispatch(setMessage(res.data.message));
-        dispatch(fetchQuiz());
+        dispatch(fetchQuiz(res.data));
       })
       .catch(err => {
+        // console.log(err)
         dispatch(setMessage(err.message));
       })
     // On successful POST:
