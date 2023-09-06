@@ -9,9 +9,21 @@ function Quiz(props) {
     fetchQuiz();
   }, [fetchQuiz]);
 
-  const handleAnswerClick = (answerId) => {
-    postAnswer(answerId);
+  const handleAnswerClick = (answerId, idx) => {
+    // Toggle the selected answer based on its current state
+    const newSelectedAnswer = selectedAnswer === idx ? null : idx;
+    postAnswer(answerId, newSelectedAnswer);
+    // Remove the "selected" class from all answers and add it only to the selected one
+    const answerElements = document.querySelectorAll('.answer');
+    answerElements.forEach((element, index) => {
+      if (newSelectedAnswer === index) {
+        element.classList.add('selected');
+      } else {
+        element.classList.remove('selected');
+      }
+    });
   };
+  
 
   const handleSubmitAnswer = () => {
     postAnswer(selectedAnswer);
@@ -25,9 +37,13 @@ function Quiz(props) {
 
           <div id="quizAnswers">
             {quiz.answers.map((answer, idx) => (
-              <div key={answer.id} className={`answer ${selectedAnswer === idx ? 'selected' : ''}`}>
+              <div
+                key={answer.id}
+                className={`answer ${selectedAnswer === idx ? 'selected' : ''}`}
+                onClick={() => handleAnswerClick(answer.id, idx)} // Pass the answer id and index
+              >
                 {answer.text}
-                <button onClick={() => handleAnswerClick(answer.id)}>
+                <button>
                   {selectedAnswer === idx ? 'SELECTED' : 'Select'}
                 </button>
               </div>
@@ -54,7 +70,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuiz: () => dispatch(fetchQuiz()),
-  postAnswer: (answerId) => dispatch(postAnswer(answerId)),
+  postAnswer: (answerId, selectedAnswer) => dispatch(postAnswer(answerId, selectedAnswer)), // Pass selectedAnswer
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
+
