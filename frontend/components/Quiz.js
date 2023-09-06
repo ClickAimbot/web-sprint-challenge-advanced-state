@@ -21,7 +21,7 @@ function Quiz(props) {
     <div id="wrapper">
       {quiz ? (
         <>
-          <h2>{quiz.question_text}</h2>
+          <h2>{quiz.question}</h2>
 
           <div id="quizAnswers">
             {quiz.answers.map((answer, idx) => (
