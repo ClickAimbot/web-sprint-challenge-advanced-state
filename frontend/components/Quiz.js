@@ -13,9 +13,18 @@ function Quiz(props) {
     // Toggle the selected answer based on its current state
     const newSelectedAnswer = selectedAnswer === idx ? null : idx;
     postAnswer(answerId, newSelectedAnswer);
+  
+    // Remove the "selected" class from all answers
+    const answerElements = document.querySelectorAll('.answer');
+    answerElements.forEach((element) => {
+      element.classList.remove('selected');
+    });
+  
+    // Add the "selected" class to the clicked answer
+    const clickedAnswer = answerElements[idx];
+    clickedAnswer.classList.add('selected');
     
     // Update the label of the button for all answers
-    const answerElements = document.querySelectorAll('.answer');
     answerElements.forEach((element, index) => {
       const button = element.querySelector('button');
       if (newSelectedAnswer === index) {
@@ -25,6 +34,7 @@ function Quiz(props) {
       }
     });
   };
+  
   
   const handleSubmitAnswer = () => {
     postAnswer(selectedAnswer);
@@ -41,7 +51,7 @@ function Quiz(props) {
               <div
                 key={answer.id}
                 className={`answer ${selectedAnswer === idx ? 'selected' : ''}`}
-                onClick={() => handleAnswerClick(answer.id, idx)} // Pass the answer id and index
+                onClick={() => handleAnswerClick(answer.id, idx)} 
               >
                 {answer.text}
                 <button>
