@@ -62,9 +62,10 @@ const initialFormState = {
 function form(state = initialFormState, action) {
   switch (action.type) {
     case INPUT_CHANGE:
+      const { id, value } = action.payload;
       return {
         ...state,
-        [action.payload.name]: action.payload.value,
+        [id]: value,
       };
     case RESET_FORM:
       return initialFormState;

@@ -39,10 +39,10 @@ export function setQuiz(quizData) {
   }
 }
   
-export function inputChange(name, value) { 
+export function inputChange(id, value) { 
   return {
     type: INPUT_CHANGE,
-    payload: { name, value },
+    payload: { id, value },
   }
 }
 export function resetForm() { 
