@@ -21,16 +21,15 @@ export function Form(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-    // Dispatch an action to post the new quiz data to the server
-    props.postQuiz(formData);
-
     // Clear the form fields after submission
-    setFormData({
-      newQuestion: '',
-      newTrueAnswer: '',
-      newFalseAnswer: '',
-    });
-  };
+      setFormData({
+        newQuestion: '',
+        newTrueAnswer: '',
+        newFalseAnswer: '',
+      });
+    } 
+
+    const isSubmitDisabled = !(newQuestion.length > 1 && newTrueAnswer.length > 1 && newFalseAnswer.length > 1);
 
   return (
     <form id="form" onSubmit={onSubmit}>
@@ -56,7 +55,7 @@ export function Form(props) {
         placeholder="Enter false answer"
         value={newFalseAnswer}
       />
-      <button id="submitNewQuizBtn" type="submit">
+      <button id="submitNewQuizBtn" type="submit" disabled={isSubmitDisabled}>
         Submit new quiz
       </button>
     </form>

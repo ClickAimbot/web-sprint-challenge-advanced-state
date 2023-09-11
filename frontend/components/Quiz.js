@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchQuiz, postAnswer } from '../state/action-creators';
+import { fetchQuiz, postAnswer, selectAnswer } from '../state/action-creators';
 import Message from './Message';
 
 function Quiz(props) {
-  const { quiz, selectedAnswer, infoMessage, fetchQuiz, postAnswer } = props;
+  const { quiz, selectedAnswer, selectAnswer, infoMessage, fetchQuiz, postAnswer } = props;
 
   useEffect(() => {
     fetchQuiz();
   }, [fetchQuiz]);
 
-  const handleAnswerClick = (answerId, idx) => {
-    // Set selectedAnswer to the clicked answer's index (idx)
-    props.postAnswer(quiz.quiz_id, answerId.answer_id, idx);
+  const handleAnswerClick = (answerId) => {
+    selectAnswer(answerId);
   };
 
-  const handleSubmitAnswer = () => {
-    postAnswer(selectedAnswer);
+  const handleSubmitAnswer = (e, quizId, answerId) => {
+    e.preventDefault();
+    postAnswer(quizId, answerId);
   };
 
   return (
@@ -26,22 +26,21 @@ function Quiz(props) {
           <h2>{quiz.question}</h2>
 
           <div id="quizAnswers">
-            {quiz.answers.map((answerId, idx) => (
-              console.log(selectedAnswer,idx),
+            {quiz.answers.map((answerId) => (
               <div
                 key={answerId.answer_id}
-                className={`answer ${selectedAnswer === idx ? 'selected' : ''}`}
-                onClick={() => handleAnswerClick(answerId, idx)} 
+                className={`answer ${selectedAnswer === answerId ? 'selected' : ''}`}
+                onClick={() => handleAnswerClick(answerId)} 
               >
                 {answerId.text}
                 <button>
-                  {selectedAnswer === idx ? 'SELECTED' : 'Select'}
+                  {selectedAnswer === answerId ? 'SELECTED' : 'Select'}
                 </button>
               </div>
             ))}
           </div>
 
-          <button id="submitAnswerBtn" onClick={handleSubmitAnswer} disabled={selectedAnswer === null}>
+          <button id="submitAnswerBtn" onClick={(e) => {handleSubmitAnswer(e, quiz.quiz_id, selectedAnswer.answer_id)}} disabled={selectedAnswer === null}>
             Submit answer
           </button>
         </>
@@ -61,7 +60,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuiz: () => dispatch(fetchQuiz()),
-  postAnswer: (quizId, answerId, selectedAnswer) => dispatch(postAnswer(quizId, answerId, selectedAnswer)),
+  postAnswer: (quizId, answerId) => dispatch(postAnswer(quizId, answerId)),
+  selectAnswer: (answerId) => dispatch(selectAnswer(answerId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
