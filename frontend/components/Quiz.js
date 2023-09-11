@@ -28,7 +28,7 @@ function Quiz(props) {
           <div id="quizAnswers">
             {quiz.answers.map((answerId) => (
               <div
-                key={answerId}
+                key={answerId.answer_id}
                 className={`answer ${selectedAnswer === answerId ? 'selected' : ''}`}
                 onClick={() => handleAnswerClick(answerId)} 
               >

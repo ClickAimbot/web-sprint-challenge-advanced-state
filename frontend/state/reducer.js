@@ -48,7 +48,7 @@ const initialMessageState = null;
 function infoMessage(state = initialMessageState, action) {
   switch (action.type) {
     case SET_INFO_MESSAGE:
-      return action.message; // Assuming that action.payload contains the info message
+      return action.payload; // Assuming that action.payload contains the info message
     default:
       return state;
   }
