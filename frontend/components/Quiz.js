@@ -10,9 +10,9 @@ function Quiz(props) {
     fetchQuiz();
   }, [fetchQuiz]);
 
-  const handleAnswerClick = (answerId) => {
-    // Toggle the selected answer based on its current state
-    postAnswer(quiz.quiz_id, answerId.answer_id);
+  const handleAnswerClick = (answerId, idx) => {
+    // Set selectedAnswer to the clicked answer's index (idx)
+    props.postAnswer(quiz.quiz_id, answerId.answer_id, idx);
   };
 
   const handleSubmitAnswer = () => {
@@ -27,9 +27,10 @@ function Quiz(props) {
 
           <div id="quizAnswers">
             {quiz.answers.map((answerId, idx) => (
+              console.log(selectedAnswer,idx),
               <div
                 key={answerId.answer_id}
-                className={`answer ${selectedAnswer === idx ? 'selected' : ''}`.trim()}
+                className={`answer ${selectedAnswer === idx ? 'selected' : ''}`}
                 onClick={() => handleAnswerClick(answerId, idx)} 
               >
                 {answerId.text}
@@ -47,7 +48,7 @@ function Quiz(props) {
       ) : (
         'Loading next quiz...'
       )}
-      <Message message={infoMessage} /> {/* Display the message */}
+      <Message message={infoMessage} /> 
     </div>
   );
 }
@@ -60,9 +61,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuiz: () => dispatch(fetchQuiz()),
-  postAnswer: (answerId, quizId) => dispatch(postAnswer(answerId, quizId)),
+  postAnswer: (quizId, answerId, selectedAnswer) => dispatch(postAnswer(quizId, answerId, selectedAnswer)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
-
-

@@ -38,7 +38,7 @@ const initialSelectedAnswerState = null;
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch (action.type) {
     case SET_SELECTED_ANSWER:
-      return action.payload; // Assuming that action.payload contains the selected answer
+      return action.payload;// Assuming that action.payload contains the selected answer
     default:
       return state;
   }

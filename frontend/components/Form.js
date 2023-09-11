@@ -21,7 +21,6 @@ export function Form(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-
     // Dispatch an action to post the new quiz data to the server
     props.postQuiz(formData);
 
