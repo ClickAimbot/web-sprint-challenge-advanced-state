@@ -26,7 +26,7 @@ function Quiz(props) {
           <h2>{quiz.question}</h2>
 
           <div id="quizAnswers">
-            {quiz.answers.map((answerId, idx) => (
+            {quiz.answers.map((answerId) => (
               <div
                 key={answerId}
                 className={`answer ${selectedAnswer === answerId ? 'selected' : ''}`}
