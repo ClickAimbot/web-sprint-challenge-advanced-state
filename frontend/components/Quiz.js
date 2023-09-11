@@ -26,15 +26,15 @@ function Quiz(props) {
           <h2>{quiz.question}</h2>
 
           <div id="quizAnswers">
-            {quiz.answers.map((answerId) => (
+            {quiz.answers.map((answerId, idx) => (
               <div
                 key={answerId.answer_id}
-                className={`answer ${selectedAnswer === answerId ? 'selected' : ''}`}
-                onClick={() => handleAnswerClick(answerId)} 
+                className={`answer ${selectedAnswer === idx ? 'selected' : ''}`.trim()}
+                onClick={() => handleAnswerClick(answerId, idx)} 
               >
                 {answerId.text}
                 <button>
-                  {selectedAnswer === answerId ? 'SELECTED' : 'Select'}
+                  {selectedAnswer === idx ? 'SELECTED' : 'Select'}
                 </button>
               </div>
             ))}
@@ -47,7 +47,6 @@ function Quiz(props) {
       ) : (
         'Loading next quiz...'
       )}
-      <div id="infoMessage">{infoMessage}</div>
       <Message message={infoMessage} /> {/* Display the message */}
     </div>
   );
