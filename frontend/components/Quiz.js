@@ -11,6 +11,7 @@ function Quiz(props) {
   }, [fetchQuiz]);
 
   const handleAnswerClick = (answerId) => {
+    console.log(answerId)
     selectAnswer(answerId);
   };
 
@@ -47,7 +48,6 @@ function Quiz(props) {
       ) : (
         'Loading next quiz...'
       )}
-      <Message message={infoMessage} /> 
     </div>
   );
 }

@@ -1,27 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { inputChange, postQuiz } from '../state/action-creators';
+import { inputChange, postQuiz, resetForm } from '../state/action-creators';
 import Message from './Message';
 
 export function Form(props) {
-  const { postQuiz, infomessage, form, inputChange } = props;
+  const { postQuiz, infoMessage, form, inputChange } = props;
   const { newQuestion, newTrueAnswer, newFalseAnswer } = form;
 
-  const onChange = (id, value) => {
+  const onChange = (evt) => {
+    const { id, value } = evt.target;
     inputChange(id, value);
-
   };
 
   const onSubmit = (evt, newQuestion, newTrueAnswer, newFalseAnswer) => {
     evt.preventDefault();
     postQuiz(newQuestion, newTrueAnswer, newFalseAnswer)
-    } 
+    resetForm();
+  } 
 
   const isSubmitDisabled = !(newQuestion.trim().length > 0 && newTrueAnswer.trim().length > 0 && newFalseAnswer.trim().length > 0);
 
   return (
     <div>
-      <Message message={infomessage} />
       <form id="form" onSubmit={(evt) => {onSubmit(evt, form.newQuestion, form.newTrueAnswer, form.newFalseAnswer)}}>
         <h2>Create New Quiz</h2>
         <input
@@ -53,7 +53,7 @@ export function Form(props) {
   );
 }
 const mapStateToProps = (state) => ({
-  infomessage: state.infomessage,
+  infoMessage: state.infoMessage,
   form: state.form,
 });
 
